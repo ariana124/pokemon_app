@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const https = require("https");
+const axios = require("axios");
 
 const app = express();
 
@@ -20,18 +20,18 @@ app.post("/", function(req, res) {
 
     const pokemonName = req.body.pokemon;
     console.log(pokemonName);
-    const url = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
+    const pokemonURL = `https://pokeapi.co/api/v2/pokemon/${pokemonName}/`;
 
-    https.get(url, function(response) {
-
-        console.log(response.statusCode);
-
-        response.on("data", function(data) {
-
-            //console.log(data);
-            const pokemonData = JSON.parse(data);
-            console.log(pokemonData);
-        });
-    });
+    axios.get(pokemonURL)
+        .then (function (response) { 
+            //console.log(response);
+            const pokemonData = response.data;
+            const pokemonSprite = pokemonData.sprites.front_default;
+            res.send(`<img src="${pokemonSprite}" width="200" height="200">`);
+        })
+        .catch (function (error) {
+            console.log(error);
+            res.send();
+        })
 
 });

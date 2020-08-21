@@ -4,8 +4,6 @@ const axios = require("axios");
 
 const app = express();
 
-// app.use(express.static("public"));
-
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.listen(3000, function(req, res) {
